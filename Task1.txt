@@ -1,0 +1,252 @@
+//Task 1: LINQ and LAMDA EXPRESSION
+
+//select,where,take,takewhile,skip,skipwhile
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Task
+{
+    class Student
+    {
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string mailID { get; set; }
+        public string branch { get; set; }
+        public double percentage { get; set; }
+        public List<string> skills { get; set; }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Student> sList = new List<Student>()
+            {
+                new Student() {firstName="John", lastName="Kennedy",mailID="john@gmail.com",branch="IS", percentage=87, skills= new List<string>{"SQL", "JAVA"} },
+                new Student() { firstName = "Mike", lastName = "Ross", mailID = "mike@gmail.com", branch = "CS", percentage = 92, skills = new List<string> { "C#" } },
+                new Student() {firstName="Harvey", lastName="Spector",mailID="harvey@gmail.com",branch="EC", percentage=89,skills = new List<string>{"JavaScript"} },
+                new Student() {firstName="Racheal", lastName="Green",mailID="racheal@gmail.com",branch="ME", percentage=72, skills = new List<string>{"MySQL"} },
+                new Student() {firstName="Monica", lastName="Geller",mailID="monica@gmail.com",branch="Architecture", percentage=83, skills = new List<string>{"Python" } },
+                new Student() {firstName="Pheobe", lastName="Buffay",mailID="pheobe@gmail.com",branch="Civil", percentage=77, skills = new List<string>{"ASP.NET" } },
+                new Student() {firstName="Joey", lastName="Tribbiani",mailID="joey@gmail.com",branch="Civil", percentage=67, skills = new List<string>{".NET" } }
+            };
+
+            //select
+            //var query1 = from i in sList select i; //Linq
+            var query1 = sList.Select(i => i); //Lamba
+            foreach (var i in query1)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            //where
+            //var query2 = from i in sList where i.branch == ("Civil") select i; //Linq
+            var query2 = sList.Where(i => i.branch == "Civil"); //Lambda
+            foreach (var i in query2)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            //take
+            //var query3 = (from i in sList select i).Take(5); Linq
+            var query3 = sList.Select(i => i).Take(5); //Lambda
+            foreach (var i in query3)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            //takewhile
+            //var query4 = (from i in sList select i).TakeWhile(i => i.branch == "IS"); Linq
+            var query4 = sList.Select(i => i).TakeWhile(i => i.branch == "IS"); //Lambda
+            foreach (var i in query4)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            //skip
+            //var query5 = sList.Select(i => i).Skip(2); //Lamba
+            var query5 = (from i in sList select i).Skip(2); //Linq
+            foreach (var i in query5)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            //skipwhile
+            //var query6 = (from i in sList select i).SkipWhile(i => i.percentage == 87); //Linq
+            var query6 = sList.Select(i=>i).SkipWhile(i => i.percentage == 87); //Lambda
+            foreach (var i in query6)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+        }
+    }
+}
+
+//order by asc and desc,group by
+
+//order by
+//var query1 = from i in sList orderby i.percentage ascending select i; //Linq
+  var query1 = sList.OrderBy(i => i.percentage); //Lambda
+  foreach(var i in query1)
+  {
+     Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+  }
+//var query2 = from i in sList orderby i.percentage descending select i; //Linq
+  var query2 = sList.OrderByDescending(i => i.percentage); //Lamda
+  foreach (var i in query1)
+  {
+     Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+  }
+
+//group by
+  var query3 = from i in sList group i by i.branch == "Civil";
+  foreach (var group in query3)
+  {
+     Console.WriteLine(group.Key);
+     foreach(var i in group)
+  {
+     Console.WriteLine(i.firstName + " " + i.lastName + ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+  }
+}
+
+//Aggregate functions->sum,max,min,avg,count,distinct
+
+//aggregate functions
+            var sum = (from i in sList select i.percentage).Sum();
+            Console.WriteLine("Total sum of the percentage: "+sum);
+
+            var max = (from i in sList select i.percentage).Max();
+            Console.WriteLine("Maximum percentage: "+max);
+
+            var min = (from i in sList select i.percentage).Min();
+            Console.WriteLine("Minimum percentage: " + min);
+
+            var avg = (from i in sList select i.percentage).Average();
+            Console.WriteLine("Average percentage: " + avg);
+
+            var count = (from i in sList select i).Count();
+            Console.WriteLine("Count: "+count);
+
+            var distinct = (from i in sList select i.percentage).Distinct();
+            foreach (var i in distinct)
+            {
+                Console.WriteLine(i);
+            }
+
+//display names startswith,endswith,contains
+
+//display names
+            var query1 = (from i in sList where i.firstName.StartsWith('J') select i);
+            foreach (var i in query1)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName); //+ ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            var query2 = (from i in sList where i.firstName.EndsWith('e') select i);
+            foreach (var i in query2)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName);  //+ ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+            var query3 = (from i in sList where i.lastName.Contains('R') select i);
+            foreach (var i in query3)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName); //+ ", " + i.mailID + ", " + i.branch + ", " + i.percentage);
+            }
+
+//let,into,oftype<int/string>
+//let
+            var query1 = (from i in sList let res = i.percentage + 2 select res);
+            foreach (var i in query1)
+            {
+                Console.WriteLine(i); 
+            }
+
+            //into
+            var query2 = (from i in sList where i.branch == "Civil" select i into res where res.firstName.StartsWith('P') select res);
+            foreach(var i in query2)
+            {
+                Console.WriteLine(i.firstName+ " "+i.lastName+", "+i.branch);
+            }
+
+            //offtype
+            var query3 = (from i in sList select i.percentage).OfType<double>();
+            foreach (var i in query3)
+            {
+                Console.WriteLine(i);
+            }
+
+            var query4 = (from i in sList select i.firstName).OfType<string>();
+            foreach (var i in query4)
+            {
+                Console.WriteLine(i);
+            }
+
+//first,firstordefault,last,lastdefault,single,singleordefault,elementat,elementatordefault.
+
+            //first
+            var query1 = (from i in sList where i.branch == "Civil" select i).First();
+            Console.WriteLine(query1.firstName+" "+query1.lastName);
+
+            //firstordefault
+            var query2 = (from i in sList where i.firstName == "Mike" select i).FirstOrDefault();
+            Console.WriteLine(query2.firstName+" "+query2.lastName);
+
+            //last
+            var query3 = (from i in sList where i.branch == "Civil" select i).Last();
+            Console.WriteLine(query3.firstName + " " + query3.lastName);
+
+            //lastordefault
+            var query4 = (from i in sList where i.lastName == "Ross" select i).LastOrDefault();
+            Console.WriteLine(query4.firstName + " " + query4.lastName);
+
+            //single
+            var query5 = (from i in sList where i.lastName == "Green" select i).Single();
+            Console.WriteLine(query5.firstName);
+
+            //single of default
+            var query6 = (from i in sList where i.lastName == "Green" select i).SingleOrDefault();
+            Console.WriteLine(query6.firstName); 
+
+            //element at
+            var query7 = (from i in sList select i).ElementAt(4);
+            Console.WriteLine(query7.firstName);
+
+            //elementatordefault
+            var query8 = (from i in sList select i).ElementAtOrDefault(4);
+            Console.WriteLine(query8.firstName);   
+
+//Immediate execution and deffered execution.
+
+            //immediate
+            var query1 = (from i in sList select i).Count();
+            sList.Add(new Student() { firstName = "Chandler", lastName = "Bing", mailID = "chandler@gmail.com", branch = "ME", percentage = 84 });
+            var query2 = (from i in sList select i).Count();
+            Console.WriteLine(query1);
+            Console.WriteLine(query2);
+
+            //deferred
+            var query3 = (from i in sList select i).Count();
+            sList.Add(new Student() { firstName = "Ross", lastName = "Geller", mailID = "ross@gmail.com", branch = "ME", percentage = 94 });
+            var query4 = (from i in sList select i).Count();
+            Console.WriteLine(query3);
+            Console.WriteLine(query4);	
+
+//IEnumerable and IQueryable
+
+            //ienumerable
+            IEnumerable<string> query1 = sList.Select(i => i.firstName);
+            foreach (var i in query1)
+            {
+                Console.WriteLine(i);
+            }
+
+            //iqueryable
+            IQueryable<Student> query2 = (from i in sList select i).AsQueryable();
+
+            foreach (var i in query2)
+            {
+                Console.WriteLine(i.firstName + " " + i.lastName);
+            }
+
